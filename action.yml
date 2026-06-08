@@ -1,0 +1,48 @@
+name: "doloc i18n Translation"
+description: "Translate XLIFF, JSON, and Android XML localization files with doloc."
+author: "doloc"
+
+branding:
+  icon: "globe"
+  color: "purple"
+
+inputs:
+  token:
+    description: "doloc API token. Store it as a GitHub Actions secret, for example DOLOC_API_TOKEN."
+    required: true
+  source:
+    description: "Default source localization file. Required for JSON, ARB and Android XML target files. Unused for XLIFF."
+    required: false
+  target:
+    description: "Single target localization file. Use with target-lang for single-target mode."
+    required: false
+  targets:
+    description: "Multiline target mapping. Examples: path/to/de.json:de or source.en.json => target.de.json:de. The `:lang` suffix is optional when the language can be inferred from the file name or is included in the file contents (e.g. XLIFF) or when you provide `target-lang` in single-target mode."
+    required: false
+  source-lang:
+    description: "Source language, e.g. en or en-US. Passed as sourceLang to the doloc API."
+    required: false
+  target-lang:
+    description: "Target language for single-target mode, e.g. de or fr."
+    required: false
+  mode:
+    description: "update or check. Update overwrites targets; check compares without modifying files."
+    required: false
+    default: "update"
+  options:
+    description: "Additional doloc API query parameters, one per line. Example: untranslated=no-state,needs-translation"
+    required: false
+  fail-on-change:
+    description: "Fail if translations would change target files. Defaults to true in check mode and false in update mode."
+    required: false
+outputs:
+  changed:
+    description: "true if any target file changed or would change."
+  changed-files:
+    description: "Newline-separated list of changed files."
+  processed-files:
+    description: "Number of processed target files."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"

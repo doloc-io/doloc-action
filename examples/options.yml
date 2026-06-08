@@ -1,0 +1,24 @@
+name: Translate i18n with doloc options
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          source: src/lang/en.json
+          targets: |
+            src/lang/de.json:de
+            src/lang/fr.json:fr
+          options: |
+            untranslated=no-state,needs-translation

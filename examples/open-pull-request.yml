@@ -1,0 +1,42 @@
+name: Update translations
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/lang/en.json
+      - .github/workflows/update-translations.yml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: doloc
+        uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          source: src/lang/en.json
+          targets: |
+            src/lang/de.json:de
+            src/lang/fr.json:fr
+
+      - name: Create pull request
+        if: steps.doloc.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "Update translations"
+          title: "Update translations"
+          body: "Updated localization files using doloc."
+          branch: doloc/update-translations
+          delete-branch: true
+          add-paths: |
+            src/lang/de.json
+            src/lang/fr.json

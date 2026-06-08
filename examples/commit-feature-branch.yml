@@ -1,0 +1,35 @@
+name: Update translations on feature branches
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - src/lang/en.json
+      - .github/workflows/update-translations.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: doloc
+        uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          source: src/lang/en.json
+          targets: |
+            src/lang/de.json:de
+            src/lang/fr.json:fr
+
+      - name: Commit translation updates
+        if: steps.doloc.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: Update translations
+          file_pattern: src/lang/de.json src/lang/fr.json

@@ -1,0 +1,23 @@
+name: Check translations
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          mode: check
+          source: src/lang/en.json
+          targets: |
+            src/lang/de.json:de
+            src/lang/fr.json:fr

@@ -1,0 +1,23 @@
+name: Translate Android resources
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  translate-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          source: app/src/main/res/values/strings.xml
+          source-lang: en
+          targets: |
+            app/src/main/res/values-de/strings.xml:de
+            app/src/main/res/values-fr/strings.xml:fr

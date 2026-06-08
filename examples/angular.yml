@@ -1,0 +1,21 @@
+name: Translate Angular XLIFF
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  translate-angular:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: doloc-io/doloc-action@v1
+        with:
+          token: ${{ secrets.DOLOC_API_TOKEN }}
+          targets: |
+            src/locale/messages.de.xlf
+            src/locale/messages.fr.xlf
