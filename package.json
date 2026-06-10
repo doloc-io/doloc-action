@@ -1,6 +1,6 @@
 {
   "name": "doloc-action",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "private": false,
   "description": "GitHub Action for automatic i18n translation with doloc.",
   "main": "dist/index.js",
